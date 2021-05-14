@@ -125,10 +125,10 @@ No type class instance was found for
 
  ## Exercises
 
-1. (Easy) Define a `Show` instance for `Point`. Match the same output as the `showPoint` function from the previous chapter.
+1. (Easy) Define a `Show` instance for `Point`. Match the same output as the `showPoint` function from the previous chapter. _Note:_ Point is now a `newtype` (instead of a `type` synonym), which allows us to customize how to `show` it. Otherwise, we'd be stuck with the default `Show` instance for records.
 
     ```haskell
-    data Point
+    newtype Point
       = Point
       { x :: Number
       , y :: Number
@@ -314,7 +314,7 @@ Many standard type classes come with their own set of similar laws. The laws giv
 
 ### Deriving Instances
 
-Rather than writing instances manually, you can let the compiler to most of the work for you. Take a look at this [Type Class Deriving guide](https://github.com/purescript/documentation/blob/master/guides/Type-Class-Deriving.md). That information will help you solve the following exercises.
+Rather than writing instances manually, you can let the compiler do most of the work for you. Take a look at this [Type Class Deriving guide](https://github.com/purescript/documentation/blob/master/guides/Type-Class-Deriving.md). That information will help you solve the following exercises.
 
 ## Exercises
 
@@ -332,7 +332,7 @@ newtype Complex
 
 2. (Easy) Derive an `Eq` instance for `Complex`. _Note_: You may instead write this instance manually, but why do more work if you don't have to?
 
-3. (Medium) Define a `Semiring` instance for `Complex`. _Note_: You can use `wrap` and `over2` from [`Data.Newtype`](https://pursuit.purescript.org/packages/purescript-newtype/docs/Data.Newtype) to create a more concise solution.
+3. (Medium) Define a `Semiring` instance for `Complex`. _Note_: You can use `wrap` and `over2` from [`Data.Newtype`](https://pursuit.purescript.org/packages/purescript-newtype/docs/Data.Newtype) to create a more concise solution. If you do so, you will also need to import `class Newtype` from `Data.Newtype` and derive a `Newtype` instance for `Complex`.
 
 4. (Easy) Derive (via `newtype`) a `Ring` instance for `Complex`. _Note_: You may instead write this instance manually, but that's not as convenient.
 
@@ -455,7 +455,7 @@ When the program is compiled, the correct type class instance for `Show` is chos
 
 1. (Medium) Write a `dedupShapes :: Array Shape -> Array Shape` function which removes duplicate `Shape`s from an array using the `nubEq` function.
 
-1. (Medium) Write a `dedupShapesFast` function which is the same as `dudupShapes`, but uses the more efficient `nub` function.
+1. (Medium) Write a `dedupShapesFast` function which is the same as `dedupShapes`, but uses the more efficient `nub` function.
 
 ## Multi Parameter Type Classes
 
@@ -591,7 +591,15 @@ We've already seen the `unsafePartial` function, which allows us to treat a part
 unsafePartial :: forall a. (Partial => a) -> a
 ```
 
-Note that the `Partial` constraint appears _inside the parentheses_ on the left of the function arrow, but not in the outer `forall`. That is, `unsafePartial` is a function from partial values to regular values.
+Note that the `Partial` constraint appears _inside the parentheses_ on the left of the function arrow, but not in the outer `forall`. That is, `unsafePartial` is a function from partial values to regular values:
+
+```text
+> unsafePartial head [1, 2, 3]
+1
+
+> unsafePartial secondElement [1, 2, 3]
+2
+```
 
 ## Superclasses
 

@@ -2,11 +2,11 @@ module Test.Main where
 
 import Prelude
 import Test.MySolutions
-import Data.AddressBook (examplePerson, PhoneType(..))
-import Data.Array (filter, null)
+import Test.NoPeeking.Solutions  -- Note to reader: Delete this line
 import Data.List (List(..), foldM, (:))
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
+import Math (abs, pi)
 import Test.Examples (countThrows, safeDivide)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert as Assert
@@ -73,6 +73,19 @@ main =
             $ filterM
                 onlyPositiveEvenIntegers
                 (2 : 3 : 4 : Nil)
+      suite "ST" do
+        suite "estimatePi" do
+          test "1000 terms of Gregory Series"
+            $ Assert.assert "Estimated value of pi not within threshold"
+            (abs (estimatePi 1000 - pi) < 0.002)
+          test "1000000 terms of Gregory Series"
+            $ Assert.assert "Estimated value of pi not within threshold"
+            (abs (estimatePi 1000000 - pi) < 0.000002)
+        suite "fibonacci" do
+          test "40th Fibonacci number"
+            $ Assert.equal 165580141 (fibonacci 40)
+          test "45th Fibonacci number"
+            $ Assert.equal 1836311903 (fibonacci 45)
 
 -}
 runChapterExamples :: TestSuite

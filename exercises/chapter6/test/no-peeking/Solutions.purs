@@ -5,13 +5,13 @@ import Prelude
 import Data.Array (length, nub, nubByEq, nubEq)
 import Data.Foldable (class Foldable, foldMap, foldl, foldr, maximum)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
+import Data.Show.Generic (genericShow)
 import Data.Hashable (class Hashable, hash, hashEqual)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (power)
 import Data.Newtype (class Newtype, over2, wrap)
 
-data Point
+newtype Point
   = Point
   { x :: Number
   , y :: Number
@@ -57,7 +57,7 @@ instance semiringComplex :: Semiring Complex where
             , imaginary: r1 * i2 + r2 * i1
             }
   zero = wrap zero
-  one = wrap one
+  one = wrap { real: one, imaginary: zero }
 {-
 -- Without Newtype
 instance semiringComplex :: Semiring Complex where
@@ -70,10 +70,10 @@ instance semiringComplex :: Semiring Complex where
           , imaginary: r1 * i2 + r2 * i1
           }
   zero = Complex zero
-  one = Complex one
+  one = Complex { real: one, imaginary: zero }
   -- Could instead write `zero` and `one` more explicitly
   --zero = Complex {real: 0.0, imaginary: 0.0}
-  --one = Complex {real: 1.0, imaginary: 1.0}
+  --one = Complex {real: 1.0, imaginary: 0.0}
 -}
 
 derive newtype instance ringComplex :: Ring Complex
@@ -219,11 +219,6 @@ instance actionSelf :: Monoid m => Action m (Self m) where
 -- These may also be written manualy
 derive newtype instance showSelf :: Show m => Show (Self m)
 derive newtype instance eqSelf :: Eq m => Eq (Self m)
-derive newtype instance semigroupSelf :: Semigroup m => Semigroup (Self m)
-derive newtype instance monoidSelf :: Monoid m => Monoid (Self m)
-
-instance repeatActionMultSelf :: Action (Self Multiply) Int where
-  act (Self (Multiply m)) s = m * s
 
 arrayHasDuplicates :: forall a. Hashable a => Array a -> Boolean
 arrayHasDuplicates arr =

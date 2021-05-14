@@ -2,17 +2,16 @@ module Test.NoPeeking.Solutions where
 
 import Prelude
 
+import ChapterExamples (Amp(..), Volt(..), Coulomb(..))
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.Person (Person)
 import Data.Picture
   ( Bounds
   , Picture
-  , Point(Point)
+  , Point
   , Shape(Circle, Rectangle, Line, Text)
   , bounds
   , getCenter
-  , getX
-  , getY
   , intersect
   , origin
   )
@@ -62,25 +61,17 @@ circleAtOrigin = Circle origin 10.0
 centerShape :: Shape -> Shape
 centerShape (Circle c r) = Circle origin r
 centerShape (Rectangle c w h) = Rectangle origin w h
-centerShape line@(Line (Point s) (Point e)) =
-  (Line
-    (Point { x: s.x - deltaX, y: s.y - deltaY })
-    (Point { x: e.x - deltaX, y: e.y - deltaY })
-  )
+centerShape line@(Line s e) = Line (s - delta) (e - delta)
   where
   delta = getCenter line
-  deltaX = getX delta
-  deltaY = getY delta
 centerShape (Text loc text) = Text origin text
 
 scaleShape :: Number -> Shape -> Shape
 scaleShape i (Circle c r) = Circle c (r * i)
 scaleShape i (Rectangle c w h) = Rectangle c (w * i) (h * i)
-scaleShape i (Line (Point s) (Point e)) =
-  (Line
-    (Point { x: s.x * i, y: s.y * i })
-    (Point { x: e.x * i, y: e.y * i })
-  )
+scaleShape i (Line s e) = Line (s * scale) (e * scale)
+  where
+  scale = {x: i, y: i}
 scaleShape i text = text
 
 doubleScaleAndCenter :: Shape -> Shape
@@ -111,3 +102,8 @@ Your solution should edit `shapeBounds` in `Picture.purs`.
 shapeBounds :: ShapeExt -> Bounds
 shapeBounds (Clipped pic pt w h) = intersect (bounds pic) (DataP.shapeBounds (Rectangle pt w h))
 shapeBounds (Shape shape) = DataP.shapeBounds shape
+
+newtype Watt = Watt Number
+
+calculateWattage :: Amp -> Volt -> Watt
+calculateWattage (Amp i) (Volt v) = Watt $ i * v

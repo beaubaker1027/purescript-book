@@ -3,10 +3,11 @@ module Data.AddressBook where
 import Prelude
 
 import Data.Argonaut (class DecodeJson, class EncodeJson)
-import Data.Argonaut.Decode.Generic.Rep (genericDecodeJson)
-import Data.Argonaut.Encode.Generic.Rep (genericEncodeJson)
+import Data.Argonaut.Decode.Generic (genericDecodeJson)
+import Data.Argonaut.Encode.Generic (genericEncodeJson)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
+-- ANCHOR_END: import
+import Data.Show.Generic (genericShow)
 
 type Address
   = { street :: String

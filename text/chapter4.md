@@ -32,22 +32,29 @@ Here is the usual _factorial function_ example:
 
 ```haskell
 fact :: Int -> Int
-fact 0 = 1
-fact n = n * fact (n - 1)
+fact n =
+  if n == 0 then
+    1
+  else
+    n * fact (n - 1)
 ```
 
 Here, we can see how the factorial function is computed by reducing the problem to a subproblem - that of computing the factorial of a smaller integer. When we reach zero, the answer is immediate.
 
-Here is another common example, which computes the _Fibonnacci function_:
+Here is another common example, which computes the _Fibonacci function_:
 
 ```haskell
 fib :: Int -> Int
-fib 0 = 1
-fib 1 = 1
-fib n = fib (n - 1) + fib (n - 2)
+fib n =
+  if n == 0 || n == 1 then
+    1
+  else
+    fib (n - 1) + fib (n - 2)
 ```
 
 Again, this problem is solved by considering the solutions to subproblems. In this case, there are two subproblems, corresponding to the expressions `fib (n - 1)` and `fib (n - 2)`. When these two subproblems are solved, we assemble the result by adding the partial results.
+
+Note that, while the above examples of `fact` and `fib` work as intended, a more idiomatic implementation would use pattern matching instead of `if`/`then`/`else`. Pattern matching techniques are discussed in a later chapter.
 
 ## Recursion on Arrays
 
@@ -70,7 +77,7 @@ length arr =
 
 In this function, we use an `if .. then .. else` expression to branch based on the emptiness of the array. The `null` function returns `true` on an empty array. Empty arrays have length zero, and a non-empty array has a length that is one more than the length of its tail.
 
-The `tail` function returns a `Maybe` wrapping the given array without its first element. If the array is empty (i.e. it doesn't has a tail) `Nothing` is returned. The `fromMaybe` function takes a default value and a `Maybe` value. If the latter is `Nothing` it returns the default, in the other case it returns the value wrapped by `Just`.
+The `tail` function returns a `Maybe` wrapping the given array without its first element. If the array is empty (i.e. it doesn't have a tail) `Nothing` is returned. The `fromMaybe` function takes a default value and a `Maybe` value. If the latter is `Nothing` it returns the default, in the other case it returns the value wrapped by `Just`.
 
 This example is obviously a very impractical way to find the length of an array in JavaScript, but should provide enough help to allow you to complete the following exercises:
 
@@ -190,9 +197,9 @@ For example, suppose we wanted to compute an array of all numbers between 1 and 
  1. (Easy) Write a function `squared` which calculates the squares of an array of numbers. _Hint_: Use the `map` or `<$>` function.
  1. (Easy) Write a function `keepNonNegative` which removes the negative numbers from an array of numbers. _Hint_: Use the `filter` function.
  1. (Medium)
-    * Define an infix synonym `<$?>` for `filter`.
+    * Define an infix synonym `<$?>` for `filter`. _Note_: Infix synonyms may not be defined in the REPL, but you can define it in a file.
     * Write a `keepNonNegativeRewrite` function, which is the same as `keepNonNegative`, but replaces `filter` with your new infix operator `<$?>`.
-    * Experiment with the precedence level and associativity of your operator in PSCi. NOTE: no unit tests for this.
+    * Experiment with the precedence level and associativity of your operator in PSCi. _Note_: There are no unit tests for this step.
 
 ## Flattening Arrays
 

@@ -97,7 +97,7 @@ forall a b c d. (a -> b -> c -> d) -> Maybe a -> Maybe b -> Maybe c -> Maybe d
 
 This type says that we can take any function with three arguments, and lift it to give a new function whose argument and result types are wrapped with `Maybe`.
 
-Certainly, this is not possible for any type constructor `f`, so what is it about the `Maybe` type which allowed us to do this? Well, in specializing the type above, we removed a type class constraint on `f` from the `Apply` type class. `Apply` is defined in the Prelude as follows:
+Certainly, this is not possible for every type constructor `f`, so what is it about the `Maybe` type which allowed us to do this? Well, in specializing the type above, we removed a type class constraint on `f` from the `Apply` type class. `Apply` is defined in the Prelude as follows:
 
 ```haskell
 class Functor f where
@@ -127,7 +127,7 @@ Now we'll see how `map` and `apply` can be used together to lift functions of ar
 
 For functions of one argument, we can just use `map` directly.
 
-For functions of two arguments, we have a curried function `g` with type `a -> b -> c`, say. This is equivalent to the type `a -> (b -> c)`, so we can apply `map` to `g` to get a new function of type `f a -> f (b -> c)` for any type constructor `f` with a `Functor` instance. Partially applying this function to the first lifted argument (of type `f a`), we get a new wrapped function of type `f (b -> c)`. If we also have an `Apply` instance for `f`, then we can then use `apply` to apply the second lifted argument (of type `f b`) to get our final value of type `f c`.
+For functions of two arguments, we have a curried function `g` with type `a -> b -> c`, say. This is equivalent to the type `a -> (b -> c)`, so we can apply `map` to `g` to get a new function of type `f a -> f (b -> c)` for any type constructor `f` with a `Functor` instance. Partially applying this function to the first lifted argument (of type `f a`), we get a new wrapped function of type `f (b -> c)`. If we also have an `Apply` instance for `f`, we can then use `apply` to apply the second lifted argument (of type `f b`) to get our final value of type `f c`.
 
 Putting this all together, we see that if we have values `x :: f a` and `y :: f b`, then the expression `(g <$> x) <*> y` has type `f c` (remember, this expression is equivalent to `apply (map g x) y`). The precedence rules defined in the Prelude allow us to remove the parentheses: `g <$> x <*> y`.
 
@@ -329,7 +329,7 @@ This might be good enough, but if we want to see a list of _all_ missing fields 
 
 As an example of working with applicative functors abstractly, this section will show how to write a function which will generically combine side-effects encoded by an applicative functor `f`.
 
-What does this mean? Well, suppose we have a list of wrapped arguments of type `f a` for some `a`. That is, suppose we have an list of type `List (f a)`. Intuitively, this represents a list of computations with side-effects tracked by `f`, each with return type `a`. If we could run all of these computations in order, we would obtain a list of results of type `List a`. However, we would still have side-effects tracked by `f`. That is, we expect to be able to turn something of type `List (f a)` into something of type `f (List a)` by "combining" the effects inside the original list.
+What does this mean? Well, suppose we have a list of wrapped arguments of type `f a` for some `a`. That is, suppose we have a list of type `List (f a)`. Intuitively, this represents a list of computations with side-effects tracked by `f`, each with return type `a`. If we could run all of these computations in order, we would obtain a list of results of type `List a`. However, we would still have side-effects tracked by `f`. That is, we expect to be able to turn something of type `List (f a)` into something of type `f (List a)` by "combining" the effects inside the original list.
 
 For any fixed list size `n`, there is a function of `n` arguments which builds a list of size `n` out of those arguments. For example, if `n` is `3`, the function is `\x y z -> x : y : z : Nil`. This function has type `a -> a -> a -> List a`. We can use the `Applicative` instance for `List` to lift this function over `f`, to get a function of type `f a -> f a -> f a -> f (List a)`. But, since we can do this for any `n`, it makes sense that we should be able to perform the same lifting for any _list_ of arguments.
 
@@ -537,8 +537,8 @@ invalid (["Field 'Number' did not match the required format"])
 
  ## Exercises
 
- 1. (Easy) Write a regular expression `stateRegex :: Either String Regex` to check that a string only contains two alphabetic characters. _Hint_: see the source code for `phoneNumberRegex`.
- 1. (Medium) Write a regular expression `nonEmptyRegex :: Either String Regex` to check that a string is not entirely whitespace. _Hint_: If you need help developing this regex expression, check out [RegExr](https://regexr.com) which has a great cheatsheet and interactive test environment.
+ 1. (Easy) Write a regular expression `stateRegex :: Regex` to check that a string only contains two alphabetic characters. _Hint_: see the source code for `phoneNumberRegex`.
+ 1. (Medium) Write a regular expression `nonEmptyRegex :: Regex` to check that a string is not entirely whitespace. _Hint_: If you need help developing this regex expression, check out [RegExr](https://regexr.com) which has a great cheatsheet and interactive test environment.
  1. (Medium) Write a function `validateAddressImproved` that is similar to `validateAddress`, but uses the above `stateRegex` to validate the `state` field and `nonEmptyRegex` to validate the `street` and `city` fields. _Hint_: see the source for `validatePhoneNumber` for an example of how to use `matches`.
 
 ## Traversable Functors

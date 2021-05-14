@@ -26,11 +26,13 @@ main = do
         Assert.equal 3.141592653589793 (circleArea 1.0)
       test "radius 3" do
         Assert.equal 28.274333882308138 (circleArea 3.0)
-    suite "addE" do
-      test "1.23" do
-        Assert.equal 3.948281828459045 (addE "1.23")
-      test "4.56" do
-        Assert.equal 7.278281828459045 (addE "4.56")
+    suite "leftoverCents" do
+      test "23" do
+        Assert.equal 23 (leftoverCents 23)
+      test "456" do
+        Assert.equal 56 (leftoverCents 456)
+      test "-789" do
+        Assert.equal (-89) (leftoverCents (-789))
 
         {-  Move this block comment starting point to enable more tests
 -}
