@@ -24,7 +24,6 @@ main :: Effect Unit
 main =
   runTest do
     runChapterExamples
-    {-  Move this block comment starting point to enable more tests
     suite "Exercise Group - Applicative and Effects" do
       suite "Exercise - Numeric operators that work with Maybe" do
         suite "addMaybe" do
@@ -159,7 +158,7 @@ main =
       suite "Exercise - traverse" do
         suite "Functor Tree" do
           test "Functor - map" do
-            Assert.equal 
+            Assert.equal
               (Branch (Branch (leaf "1") "2" (leaf "3")) "4" (Branch (leaf "5") "6" (leaf "7")))
               $ map show intTree
         suite "Foldable Tree" do
@@ -242,6 +241,7 @@ main =
         test "Nothing" do
           Assert.equal Nothing
             $ traverseUsingSequence fromNumber [ 1.0, 2.7 ]
+            {-  Move this block comment starting point to enable more tests
 
 -}
 runChapterExamples :: TestSuite

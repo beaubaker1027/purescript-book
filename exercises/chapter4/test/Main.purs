@@ -17,7 +17,6 @@ main :: Effect Unit
 main =
   runTest do
     runChapterExamples
-    {-  Move this block comment starting point to enable more tests
     suite "Exercise Group - Recursion" do
       test "Exercise - isEven" do
         assert "0 is even"
@@ -109,10 +108,12 @@ main =
             $ triples 13
       suite "Exercise - factorize" do
         test "Test small non-prime number" do
-          Assert.equal [ 3, 2 ]
+          Assert.equal (sort [ 3, 2 ])
+            $ sort
             $ factorize 6
         test "Test number that uses the prime numbers less than 10" do
-          Assert.equal [ 7, 5, 3, 2 ]
+          Assert.equal (sort [ 7, 5, 3, 2 ])
+            $ sort
             $ factorize 210
     suite "Exercise Group - Folds and Tail Recursion" do
       test "Exercise - allTrue" do
@@ -178,6 +179,7 @@ main =
         testls "works for a directory with one file" ["/etc/hosts"] oneFileDir
         testls "works for an empty directory" [] emptyDir
 
+        {-  Move this block comment starting point to enable more tests
 -}
 runChapterExamples :: TestSuite
 runChapterExamples =

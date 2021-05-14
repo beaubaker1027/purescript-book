@@ -117,7 +117,7 @@ whereIs path fileName = head $ whereIs' $ allFiles path
     pure path
 
 largestSmallest :: Path -> Array Path
-largestSmallest path = 
+largestSmallest path =
   let files = onlyFiles path
       maybeSizes = map size files
       maybeMax = foldl (outlier (>)) Nothing maybeSizes
