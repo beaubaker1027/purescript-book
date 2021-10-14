@@ -1,17 +1,17 @@
 module Test.MySolutions where
 
 import Prelude
-import Data.Either (Either(..))
-import Data.String.Regex (Regex, test, regex)
+import Data.String.Regex (Regex)
 import Data.String.Regex.Flags (noFlags)
+import Data.String.Regex.Unsafe (unsafeRegex)
 import Control.Apply (lift2)
 import Data.Maybe (Maybe(..))
 import Data.AddressBook.Validation(matches, Errors, validatePhoneNumbers, validateAddress, nonEmpty )
-import Data.AddressBook(Address(..), PhoneNumber(..), person, phoneNumber, address)
+import Data.AddressBook(Address, PhoneNumber, address)
 import Data.Validation.Semigroup (V)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
-import Data.Traversable
+import Data.Show.Generic (genericShow)
+import Data.Traversable (class Foldable, class Traversable, foldMap, foldl, foldr, sequence, traverse)
 -- Note to reader: Add your solutions to this file
 
 addMaybe = lift2 (+)
@@ -34,11 +34,11 @@ combineMaybe :: forall a f. Applicative f => Maybe ( f a ) -> f ( Maybe a )
 combineMaybe (Just x) = Just <$> x
 combineMaybe _        = pure Nothing
 
-stateRegex :: Either String Regex
-stateRegex = regex "^[a-zA-Z]{2}$" noFlags
+stateRegex :: Regex
+stateRegex = unsafeRegex "^[a-zA-Z]{2}$" noFlags
 
-nonEmptyRegex :: Either String Regex
-nonEmptyRegex = regex ".[^\\s\\t]" noFlags
+nonEmptyRegex :: Regex
+nonEmptyRegex = unsafeRegex ".[^\\s\\t]" noFlags
 
 validateAddressImproved :: Address -> V Errors Address
 validateAddressImproved a =

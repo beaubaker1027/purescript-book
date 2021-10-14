@@ -2,7 +2,7 @@ module Test.Main where
 
 import Prelude
 import Test.MySolutions
-import Test.NoPeeking.Solutions  -- Note to reader: Delete this line
+-- import Test.NoPeeking.Solutions  -- Note to reader: Delete this line
 import Data.List (List(..), foldM, (:))
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
@@ -55,7 +55,6 @@ main =
             $ filterM
                 onlyPositives
                 (2 : (-1) : 4 : Nil)
-                {-  Move this block comment starting point to enable more tests
         suite "Maybe Monad" do
           let
             -- This is an impractical filtering function,
@@ -86,6 +85,7 @@ main =
             $ Assert.equal 165580141 (fibonacci 40)
           test "45th Fibonacci number"
             $ Assert.equal 1836311903 (fibonacci 45)
+                {-  Move this block comment starting point to enable more tests
 
 -}
 runChapterExamples :: TestSuite

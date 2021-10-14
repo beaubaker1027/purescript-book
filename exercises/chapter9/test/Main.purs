@@ -17,7 +17,7 @@ import Node.FS.Aff (readTextFile, readdir, realpath, unlink)
 import Node.Path (FilePath)
 import Node.Path as Path
 import Test.Copy (copyFile)
-import Test.HTTP (getUrl)
+-- import Test.HTTP (getUrl)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
@@ -50,7 +50,6 @@ main =
       files <- readdir outDir
       for_ files \f -> unlink $ Path.concat [ outDir, f ]
     runChapterExamples
-    {-  Move this block comment starting point to enable more tests
     test "concatenateFiles" do
       let
         inFoo = Path.concat [ inDir, "foo.txt" ]
@@ -135,6 +134,7 @@ main =
         actual <- recurseFiles file
         Assert.equal (Set.fromFoldable expected) $ Set.fromFoldable actual
 
+    {-  Move this block comment starting point to enable more tests
 -}
 runChapterExamples :: TestSuite
 runChapterExamples = do
